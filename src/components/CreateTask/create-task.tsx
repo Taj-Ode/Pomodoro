@@ -19,7 +19,7 @@ const CreateTask = ({ onCreate }: CreateTaskProps) => {
 
     setDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: name === "minutes" ? Number(value) : value.trim(),
+      [name]: name === "minutes" ? Number(value) : value,
     }));
   };
 
