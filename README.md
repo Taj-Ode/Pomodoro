@@ -1,7 +1,8 @@
 # Pomodoro
 
 Yeah so just clone this and then open a terminal. Bash is cool. Then run:
-npm install
-npm run dev
 
-Then open this hot mess on localhost:something. You'll see with port in the terminal.
+1. npm install
+2. npm run dev
+
+Then open this 🔥 mess on localhost:_something_. You'll see which port in the terminal 🤷‍♀️
