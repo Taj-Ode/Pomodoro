@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styles from "./create-task.module.css";
 
 interface CreateTaskProps {
@@ -6,61 +6,55 @@ interface CreateTaskProps {
 }
 
 const CreateTask = ({ onCreate }: CreateTaskProps) => {
-  const [details, setDetails] = useState({
-    title: "",
-    area: "",
-    minutes: 25, //default to 25 minutes
-  });
-
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = event.target;
-
-    setDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: name === "minutes" ? Number(value) : value,
-    }));
-  };
+  const titleRef = useRef<HTMLInputElement>(null);
+  const areaRef = useRef<HTMLInputElement>(null);
+  const minutesRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (!details.title.trim()) return; // Prevent submission if title is empty
-    onCreate(details);
-    setDetails({ title: "", area: "", minutes: 25 }); // Reset form after submission
+
+    const title = titleRef.current?.value.trim();
+    const area = areaRef.current?.value.trim() || "";
+    const minutes = Number(minutesRef.current?.value || 25); //default to 25 minutes
+
+    if (!title) return; // Prevent submission if title is empty
+
+    onCreate({ title, area, minutes });
+
+    if (titleRef.current) titleRef.current.value = "";
+    if (areaRef.current) areaRef.current.value = "";
+    if (minutesRef.current) minutesRef.current.value = "25";
   };
 
   return (
     <div>
       <h2>Create Task</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <label>
+        <label htmlFor="title">
           Task Name:
           <input
+            ref={titleRef}
             type="text"
             name="title"
-            value={details.title}
-            onChange={handleChange}
             placeholder="Task name"
           />
         </label>
-        <label>
+        <label htmlFor="area">
           Area:
           <input
+            ref={areaRef}
             type="text"
             name="area"
-            value={details.area}
-            onChange={handleChange}
             placeholder="e.g. Deep work, Admin, Health"
           />
         </label>
-        <label>
+        <label htmlFor="minutes">
           Duration (minutes):
           <input
+            ref={minutesRef}
             type="number"
             name="minutes"
-            value={details.minutes}
-            onChange={handleChange}
+            defaultValue={25}
             min={1}
           />
         </label>
